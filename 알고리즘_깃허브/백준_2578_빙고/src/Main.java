@@ -3,10 +3,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-public class Main {
-
+public class Main{
 	static int map[][] = new int[5][5];
-	static int result=0;
+	static int result;
+	static boolean find = false;
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st;
@@ -15,36 +15,74 @@ public class Main {
 			st = new StringTokenizer(br.readLine());
 			for(int j=0;j<5;j++)
 				map[i][j] = Integer.parseInt(st.nextToken());
-		}//¹è¿­ ÀÔ·Â
-		int num = 5;
-		while(num>0) {
+		}
+		
+
+		int check[] = new int[25];
+		int idx = 0;
+		for(int i=0;i<5;i++) {
 			st = new StringTokenizer(br.readLine());
-			int arr[] = new int[5];
-			for(int i=0;i<5;i++)
-				arr[i] = Integer.parseInt(st.nextToken());
-			
+			for(int j=0;j<5;j++)
+				check[idx++] = Integer.parseInt(st.nextToken());
+		}
+		
+		for(int z=0;z<25;z++) {	
 			for(int i=0;i<5;i++) {
 				for(int j=0;j<5;j++) {
-					if(map[i][j] == arr[i]) {
+					if(map[i][j] == check[z]) {
+						//ì§€ìš°ê¸°
 						map[i][j] = 0;
-						result++;
-						break;	
+						break;
 					}
 				}
 			}
-			num--;
+			//ìˆ«ìž í•˜ë‚˜ 0ë§Œë“¤ê³  ë‚˜ì„œ findBingo
+			findBingo();
+			if(find) {
+				System.out.println(z+1);
+				break;
+			}
 		}
+
 	}
 	
 	static void findBingo() {
-		//°¡·ÎÁÙÀÌ Á¸ÀçÇÏ´ÂÁö
+		int cnt = 0;
+		int sum = 0;
+		
+		//ê°€ë¡œ
 		for(int i=0;i<5;i++) {
-			
+			sum = 0;
+			for(int j=0;j<5;j++)
+				sum += map[i][j];
+			if(sum == 0) cnt++;
 		}
 		
-		//¼¼·ÎÁÙÀÌ Á¸ÀçÇÏ´ÂÁö
+		//ì„¸ë¡œ
+		for(int i=0;i<5;i++) {
+			sum = 0;
+			for(int j=0;j<5;j++)
+				sum += map[j][i];
+			if(sum == 0) cnt++;
+		}
 		
+		//ì˜¤ë¥¸ìª½ ìœ„ ëŒ€ê°ì„ 
+		sum = 0;
+		for(int i=0;i<3;i++) {
+			sum += map[2-i][2+i];
+			sum += map[2+i][2-i];
+		}
+		if(sum ==0) cnt++;
 		
-		//´ë°¢¼±À¸·Î Á¸ÀçÇÏ´ÂÁö
+		sum = 0;
+		for(int i=0;i<3;i++) {
+			sum += map[2+i][2+i];
+			sum += map[2-i][2-i];
+		}
+		if(sum == 0) cnt++;
+		
+		if(cnt>=3)
+			find = true;
+
 	}
 }
