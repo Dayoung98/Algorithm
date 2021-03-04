@@ -1,48 +1,37 @@
 import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
 import java.util.Scanner;
-import java.util.StringTokenizer;
 
 //단어뒤집기2
 public class Main {
 
-	public static void main(String[] args) /*throws IOException*/ {
-		StringBuilder sb = new StringBuilder();
-		Queue<String> q = new LinkedList<>();
-		
+	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
-		String str  = sc.nextLine();
-	
-		char ch[] = new char[str.length()];
-		ch = str.toCharArray();
-		System.out.println(Arrays.toString(ch));
-		
-		for(int i=0, size = str.length();i<size;i++) {
-			if(ch[i] == '<') {
+		String str = sc.nextLine();
+		StringBuilder sb = new StringBuilder();
+		char c[] = new char[str.length()];
+		for(int i=0;i<str.length();i++)
+			c[i] = str.charAt(i);
+		for(int i=0;i<str.length();i++) {
+			if(c[i] =='<') {
 				while(true) {
-					sb.append(ch[i]);
-					if(ch[i] == '>') break;
+					sb.append(c[i]);
+					if(c[i]=='>') break;
+					i++;	
+				}
+			}
+			else if(c[i]==' ') sb.append(c[i]);
+			else {
+				//그냥 문자열 일때
+				int j = i;
+				while(true) {
+					if(i>=str.length() || c[i]==' '||c[i]=='<') break;
 					i++;
 				}
-				System.out.println("현재 i 값 :"+i);
-				System.out.println("현재 큐에 넣을 값 :"+sb.toString());
-				q.add(sb.toString());
-				sb.delete(0, sb.length());
-			}
-			else {
-				while(true) {
-					sb.append(ch[i++]);
-					if(ch[i] ==' ' || ch[i] =='<') break; //띄어쓰기 만ㄴ나면 break;
-				}
-				System.out.println("현재 i 값 :"+i);
-				System.out.println("현재 큐에 넣을 값 :"+sb.toString());
-				q.add(sb.toString());
-				sb.delete(0, sb.length());
+				for(int m =(i-1);m>=j;m--)
+					sb.append(c[m]);
+				i--;
 			}
 		}
-
-
-
+		System.out.println(sb);
 	}
 }

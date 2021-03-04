@@ -5,25 +5,27 @@ public class Main {
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 		int N = sc.nextInt();
-		int result = N;
-		int idx =4;
+		int result = 0;
+		int sum = 0;
 		
-		if(N>3) {
-			
-		}
-	/*	while(true) {
-			if(idx>N) break;
-			
-			if(idx%2 ==1) result++; //홀수면 +1 해주기 어짜피 못나눔
-			else {
-				int num = idx;
-				result++;
-				while(num%2 ==0) {
-					result++;
-					num = num/2;
-				}
+		/*for(int i=1;i<=N;i++) {
+			//얘가 정사각형 뽑는 숫자
+			sum = 0;
+			for(int j=1;j<=i;j++) {
+				if(i % j == 0) sum++;
 			}
+			result += (sum%2 ==0)?sum/2 : (sum+1)/2;
 		}*/
-		System.out.println(result);
+		
+		//루트 앤까지만 돌라고? J = ROOT[I]
+		for(int i=1;i<=N;i++) {
+			//sum = 0;
+			for(int j=1;j<=Math.sqrt(i);j++)
+				if(i % j ==0) sum++;
+		}
+		
+		System.out.println(sum);
+//		System.out.println(result);
 	}
 }
+//루트로 돌리니까 시간이 훨씬 짧아진다 개쩔어

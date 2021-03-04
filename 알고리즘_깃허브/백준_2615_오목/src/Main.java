@@ -1,109 +1,112 @@
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 
-// BOJ 2615 : ¿À¸ñ
 public class Main {
+	static int map[][];
+	static int result[] = new int[3];
 
-	static int player = 0;
-	static int x, y;
-	static int[][] map = new int[19 + 2][19 + 2];
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st;
 
-	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
-
-		for (int i = 1; i <= 19; i++) {
-			for (int j = 1; j <= 19; j++) {
-				map[i][j] = sc.nextInt();
+		map = new int[19][19];
+		for (int i = 0; i < 19; i++) {
+			st = new StringTokenizer(br.readLine());
+			for (int j = 0; j < 19; j++) {
+				map[i][j] = Integer.parseInt(st.nextToken());
 			}
 		}
-		// ¼Ö·ç¼Ç
-		solve();
-		// Ãâ·Â
-		System.out.println(player);
-		if (player != 0) {
-			System.out.println(x + " " + y);
-		}
 
+		boolean flag = check();
+		if (flag) {
+			System.out.println(result[0]);
+			System.out.println((result[1] + 1) + " " + (result[2] + 1));
+		} else
+			System.out.println(0);
 	}
 
-	static void solve() {
-		// ¸ðµç Á¤Á¡(ÃÖÀûÈ­, 19,19 15;
+	static boolean check() {
 
-		for (int i = 1; i <= 19; i++) {
-			for (int j = 1; j <= 19; j++) {
-				// Èòµ¹ÀÌ°Å³ª °ËÀºµ¹ÀÌ¸é ¿À¸ñ ÆÇ´Ü
-				// ºñ¿öÀÖÀ¸¸é ¹«½Ã(À¯¸Áµµ°¡¾ø´Ù)
-				if (map[i][j] == 0) {
+		int count = 0;
+
+		for (int i = 0; i < 19; i++) {
+			for (int j = 0; j < 19; j++) {
+				if (map[i][j] == 0)
 					continue;
+				// ë°”ë‘‘ëŒì´ ë†“ì—¬ì ¸ ìžˆìœ¼ë©´
+
+				int win = map[i][j];
+				// ìœ„
+				int row = i;
+				while (true) {
+					if (row < 0 || map[row][j] != win)
+						break;
+					row--;
+					count++;
 				}
-				// ¼Ö·ç¼Ç
-				// ¾Æ·¡, ¿À¸¥ÂÊ¾Æ·¡, ¿À¸¥ÂÊ, ¿À¸¥ÂÊ À§
-				int cnt = 1;
-				int k = 1;
-				// ¾Æ·¡
-				if (map[i][j] != map[i - 1][j]) { // ±âÁ¸µ¹°ú °°Áö ¾Ê´Ù¸é °¡´É¼º
-					while (map[i][j] == map[i + k][j]) {
-						k++;
-						cnt++;
-					}
+				if (count == 5) {
+					result[0] = win;
+					result[1] = i;
+					result[2] = j;
+					return true;
 				}
-				// ¿À¸ñ ÆÇ´Ü
-				if (cnt == 5) {
-					player = map[i][j];
-					x = i;
-					y = j;
-					return;
+
+				// ì•„ëž˜
+				count = 0;
+				row = i;
+				while (true) {
+					if (row >= 19 || map[row][j] != win)
+						break;
+					count++;
+					row++;
 				}
-				// ¿À¸¥ÂÊ¾Æ·¡
-				cnt = 1;
-				k = 1;
-				if (map[i][j] != map[i - 1][j - 1]) { // ±âÁ¸µ¹°ú °°Áö ¾Ê´Ù¸é °¡´É¼º
-					while (map[i][j] == map[i + k][j + k]) {
-						k++;
-						cnt++;
-					}
+				if (count == 5) {
+					result[0] = win;
+					result[1] = i;
+					result[2] = j;
+					return true;
 				}
-				// ¿À¸ñ ÆÇ´Ü
-				if (cnt == 5) {
-					player = map[i][j];
-					x = i;
-					y = j;
-					return;
+
+				// ì˜¤ë¥¸ìª½ ëŒ€ê°ì„ 
+				count = 0;
+				row = i;
+				int col = j;
+				while (true) {
+					if (row >= 19 || col >= 19 || map[row][col] != win)
+						break;
+					row++;
+					col++;
+					count++;
 				}
-				// ¿À¸¥ÂÊ
-				cnt = 1;
-				k = 1;
-				if (map[i][j] != map[i][j - 1]) { // ±âÁ¸µ¹°ú °°Áö ¾Ê´Ù¸é °¡´É¼º
-					while (map[i][j] == map[i][j + k]) {
-						k++;
-						cnt++;
-					}
+				if (count == 5) {
+					result[0] = win;
+					result[1] = i;
+					result[2] = j;
+					return true;
 				}
-				// ¿À¸ñ ÆÇ´Ü
-				if (cnt == 5) {
-					player = map[i][j];
-					x = i;
-					y = j;
-					return;
+
+				// ì™¼ìª½ ëŒ€ê°ì„ 
+				count = 0;
+				row = i;
+				col = j;
+				while (true) {
+					if (row >= 19 || col < 0 || map[row][col] != win)
+						break;
+					row++;
+					col--;
+					count++;
 				}
-				// ¿À¸¥ÂÊ À§ ´ë°¢¼±
-				cnt = 1;
-				k = 1;
-				if (map[i][j] != map[i + 1][j - 1]) { // ±âÁ¸µ¹°ú °°Áö ¾Ê´Ù¸é °¡´É¼º
-					while (map[i][j] == map[i - k][j + k]) {
-						k++;
-						cnt++;
-					}
-				}
-				// ¿À¸ñ ÆÇ´Ü
-				if (cnt == 5) {
-					player = map[i][j];
-					x = i;
-					y = j;
-					return;
+
+				if (count == 5) {
+					result[0] = win;
+					result[1] = i;
+					result[2] = j;
+					return true;
 				}
 			}
 		}
-		return;
+		return false;
 	}
-
 }
