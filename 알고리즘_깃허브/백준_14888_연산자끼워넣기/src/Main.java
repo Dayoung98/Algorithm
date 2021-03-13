@@ -1,7 +1,6 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -9,65 +8,34 @@ public class Main {
 	static int N;
 	static int number[];
 	static int operator[];
-	static boolean isVisited[];
 	static int max = Integer.MIN_VALUE,min = Integer.MAX_VALUE;
 	public static void main(String[] args) throws NumberFormatException, IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		N = Integer.parseInt(br.readLine());
 	
 		number = new int[N]; //숫자 저장
-		operator = new int[N-1]; //연산자 저장  덧셈,뺄셈,곱셈,나눗셈의 순서
-		isVisited = new boolean[N-1];
+		operator = new int[4]; //연산자 저장  덧셈,뺄셈,곱셈,나눗셈의 순서
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		for(int i=0;i<N;i++) number[i] = Integer.parseInt(st.nextToken());
 		st = new StringTokenizer(br.readLine());
-		int idx = 0;
-
-		for(int i=0;i<4;i++) {
-			int num = Integer.parseInt(st.nextToken());
-			for(int j=0;j<num;j++)
-				operator[idx++] = i;
-		}
-		System.out.println(Arrays.toString(operator));
+		for(int i=0;i<4;i++)
+			operator[i] = Integer.parseInt(st.nextToken());
 		
 		//백트래킹하면서 확인하기
-		dfs(0,0,number[0]); //첫번째 숫자 넣기
+		dfs(operator[0],operator[1],operator[2],operator[3],1,number[0]);
 		System.out.println(max);
 		System.out.println(min);
 	}
-	
-	static void dfs(int back,int cnt,int res) {
-		if(cnt == N-1) {
-			min = min>res?res:min;
-			max = max<res?res:max;
-			return;
+	static void dfs(int plus,int minus,int mul,int div,int cnt,int res) {
+		if(cnt == N) {
+			max = (res>max)?res:max;
+			min = (min>res)?res:min;
 		}
 		
-//		for(int i=cnt;i<N-1;i++) {
-//			//이거 연산자 넣어주면서 큰지 아닌지 확인하기
-//			if(operator[i] == '+') dfs(cnt+1,res+number[cnt+1]);
-//			else if(operator[i]=='-') dfs(cnt+1,res-number[cnt+1]);
-//			else if(operator[i] =='*') dfs(cnt+1,res*number[cnt+1]);
-//			else dfs(cnt+1,res/number[cnt+1]);
-//		}
-		for(int i=0;i<N-1;i++) {
-			if(!isVisited[i]) {
-				if(operator[i] == 0) {
-					res = res + number[cnt+1];
-				}
-				else if(operator[i] == 1) {
-					res = res - number[cnt+1];
-				}
-				else if(operator[i] == 2) {
-					res = res * number[cnt+1];
-				}
-				else if(operator[i] == 3) {
-					res = res / number[cnt+1];
-				}
-				isVisited[i] = true;
-				dfs(i,cnt+1,res);
-			}
-		}
-		isVisited[back] = false;
+		if(plus>0) dfs(plus-1,minus,mul,div,cnt+1,res+number[cnt]);
+		if(minus>0) dfs(plus,minus-1,mul,div,cnt+1,res-number[cnt]);
+		if(mul>0) dfs(plus,minus,mul-1,div,cnt+1,res*number[cnt]);
+		if(div>0) dfs(plus,minus,mul,div-1,cnt+1,res/number[cnt]);
 	}
+
 }
