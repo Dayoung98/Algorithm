@@ -60,7 +60,7 @@ public class Main {
 		for(int i=0;i<size;i++) {
 			isVisited = new boolean[N][N];
 			q.offer(new Passenger(list.get(i).start_x, list.get(i).start_y)); //큐에 삽입
-			bfs(list.get(i).start_x,list.get(i).start_y);
+			bfs(list.get(i).start_x ,list.get(i).start_y);
 			System.out.println("현재 가장 짧은 거리 :"+shortestPath);
 			q.clear();
 		}
