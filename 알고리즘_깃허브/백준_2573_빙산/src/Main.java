@@ -79,28 +79,6 @@ public class Main {
 	static void iceBerg() {
 		Stack<Node> stack = new Stack<>();
 		Stack<Node> stack2 = new Stack<>();
-//		for (int i = 1; i < N - 1; i++) {
-//			for (int j = 1; j < M - 1; j++) {
-//				if (map[i][j] != 0) {
-//					// 빙산이면 사방향 탐색해서 그 수 만큼 줄이기
-//					int cnt = 0;
-//					for (int d = 0; d < 4; d++) {
-//						if (cnt == map[i][j])
-//							break; // 현재 빙산의 수와 뺄 숫자가 같으면 포문 벗어나기
-//
-//						int nx = i + dx[d];
-//						int ny = j + dy[d];
-//
-//						if (nx < 0 || ny < 0 || nx > N || ny > M)
-//							continue; // 배열 범위 벗어나면 x
-//
-//						if (map[nx][ny] == 0)
-//							cnt++;
-//					}
-//					stack.add(new Node(i, j, cnt)); // 현재 빙산의 위치 좌표와 얼마만큼 녹을지 저장
-//				}
-//			}
-//		}
 
 		for (int i = 1; i < N - 1; i++) {
 			for (int j = 1; j < M - 1; j++)
